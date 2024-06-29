@@ -2,33 +2,29 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { LoginDto } from './dto/login.dto';
-import { SignUpDto } from './dto/signup.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private userRepository: Repository<User>){}
-  
-  async login(loginDto: LoginDto) {
+constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+
+  async findByUsername(userName: string){
     const user = await this.userRepository.findOne({
-      where: {
-        name: loginDto.username
-      }
-    })
-    if (user){
-      console.log('user fetched with name: ' + user.name)
-      console.log('This action loginsIn a user: ' + loginDto.username + 'with password: ' + loginDto.password)
-    }
-    return user;
+        where: {
+          name: userName 
+        }
+      })
+      return user
+
   }
 
-  signUp(signUpDto: SignUpDto){
+  async createUser(userName: string , password: string){
     const user = this.userRepository.create({
       active: true,
-      name: signUpDto.username,
-      password: signUpDto.password
+      name: userName,
+      password: password
     })
-    console.log('This action signsUp a user' + signUpDto.username + 'with password: ' + signUpDto.password)
+    console.log('This action signsUp a user' + userName + 'with password: ' +password)
     return this.userRepository.save(user);
   }
+  
 }

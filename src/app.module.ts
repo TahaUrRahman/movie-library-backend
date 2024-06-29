@@ -5,14 +5,17 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import { join } from 'path';
-import { User } from './users/entities/user.entity';
+import { MoviesModule } from './movies/movies.module';
+import { AuthModule } from './auth/auth.module';
+
 
 @Module({
   imports: [UsersModule, ConfigModule.forRoot(), TypeOrmModule.forRootAsync({
     imports: [ConfigModule],
     inject: [ConfigService],
     useFactory: (configService: ConfigService) => ({
-      type: 'postgres',
+      // type: configService.get('DB_TYPE') as DatabaseType,
+      type:'postgres',
       host: configService.get('DB_HOST'),
       port: +configService.get('DB_PORT'),
       username: configService.get('DB_USERNAME'),
@@ -22,7 +25,7 @@ import { User } from './users/entities/user.entity';
       //do not use in production
       synchronize: true
     })
-  })],
+  }), MoviesModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

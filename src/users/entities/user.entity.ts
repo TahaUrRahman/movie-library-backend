@@ -4,8 +4,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
-
-    @Column({type: 'text', nullable: true})
+    @Column({type: 'text', unique: true})
     name: string;
 
     @Column({type: 'text', nullable: true})
