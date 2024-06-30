@@ -19,4 +19,14 @@ export class AuthController {
   signUp(@Body() signUpnDto: SignUpDto) {
     return this.authService.signUp(signUpnDto);
   }
+
+  @Get('forgot-password')
+  generateResetToken(@Body() loginDto: LoginDto){
+    return this.authService.generateResetToken(loginDto.username);
+  }
+
+  @Post('reset-password/:token')
+  async resetPassword(@Param('token') token: string, @Body('password') password: string) {
+    await this.authService.resetPassword(token, password);
+  }
 }
