@@ -1,9 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { MoviesService } from './movies.service';
-import { AddMovieDto } from './dto/create-movie.dto';
+import { AddMovieDto } from './dto/add-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
-import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
 import { JwtGuard } from 'src/auth/guard';
 
 @UseGuards(JwtGuard)
@@ -12,19 +10,18 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Post()
-  addMovie(@Body() createMovieDto: AddMovieDto) {   
-    return this.moviesService.addMovie(createMovieDto);
+  addMovie(@Body() addMovieDto: AddMovieDto) {   
+    return this.moviesService.addMovie(addMovieDto);
   }
 
   @Get()
-  findAll(@Req() req: Request) {
-    console.log({origin: "find all method in Controller",obj: req.user})
+  findAll() {
     return this.moviesService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.moviesService.findOne(+id);
+    return this.moviesService.findByMovieId(+id);
   }
 
   @Patch(':id')
@@ -33,7 +30,12 @@ export class MoviesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  deleteMovie(@Param('id') id: string) {
     return this.moviesService.deleteMovie(+id);
+  }
+
+  @Delete('')
+  deleteAll() {
+    return this.moviesService.deleteAll();
   }
 }

@@ -7,6 +7,7 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import { join } from 'path';
 import { MoviesModule } from './movies/movies.module';
 import { AuthModule } from './auth/auth.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 
 @Module({
@@ -25,7 +26,7 @@ import { AuthModule } from './auth/auth.module';
       //do not use in production
       synchronize: true
     })
-  }), MoviesModule, AuthModule],
+  }), MoviesModule, AuthModule, ReviewsModule],
   controllers: [AppController],
   providers: [AppService],
 })

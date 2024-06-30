@@ -14,7 +14,19 @@ constructor(@InjectRepository(User) private readonly userRepository: Repository<
         }
       })
       return user
+  }
 
+  async findByUserId(userId: number){
+    const user = await this.userRepository.findOne({
+        where: {
+          id: userId 
+        }
+      })
+      return user
+  }
+
+  getAllUsers(){
+    return this.userRepository.find()
   }
 
   async createUser(userName: string , password: string){
@@ -26,5 +38,4 @@ constructor(@InjectRepository(User) private readonly userRepository: Repository<
     console.log('This action signsUp a user' + userName + 'with password: ' +password)
     return this.userRepository.save(user);
   }
-  
 }

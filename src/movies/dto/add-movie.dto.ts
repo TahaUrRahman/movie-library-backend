@@ -18,8 +18,4 @@ export class AddMovieDto {
     @IsString()
     @IsNotEmpty()
     genre: string;
-
-    @IsString()
-    @IsNotEmpty()
-    budget: string;
 }
